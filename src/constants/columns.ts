@@ -254,16 +254,29 @@ export const eventColumns = [
     accessor: "date",
     className: "hidden md:table-cell",
   },
+ 
+
   {
-    header: "Start Time",
-    accessor: "startTime",
-    className: "hidden md:table-cell",
+    header: "Actions",
+    accessor: "actions",
+  },
+];
+export const announcementColumns = [
+  {
+    header: "Title",
+    accessor: "title",
   },
   {
-    header: "End Time",
+    header: "Class",
     accessor: "class",
     className: "hidden md:table-cell",
   },
+  {
+    header: "Date",
+    accessor: "date",
+    className: "hidden md:table-cell",
+  },
+ 
 
   {
     header: "Actions",

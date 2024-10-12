@@ -222,6 +222,12 @@ export const financeData = [
     expense: 4300,
   },
 ];
+export const performanceData = [
+  { name: 'Group A', value: 92,fill: "#C3EBFA" },
+  { name: 'Group B', value: 8,fill: "#FAE27C" },
+
+];
+
 
 export const events = [
   {

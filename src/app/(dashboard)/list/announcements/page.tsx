@@ -2,35 +2,31 @@ import FormModal from "@/components/modals/FormModal";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { assignmentsColumns } from "@/constants/columns";
-import { assignmentsData,   role,  } from "@/lib/data";
-import { Assignments,  } from "@/types";
+import { announcementColumns, assignmentsColumns } from "@/constants/columns";
+import { announcementsData, assignmentsData,   role,  } from "@/lib/data";
+import { Announcements, Assignments,  } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
-const AssignmentsListPage = () => {
-  const renderRow = (item: Assignments) => (
+const AnnouncementsListPage = () => {
+  const renderRow = (item: Announcements) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight "
     >
-      <td className="flex items-center gap-4 p-4">{item.subject}</td>
+      <td className="flex items-center gap-4 p-4">{item.title}</td>
       <td className="hidden md:table-cell">{item.class}</td>
-      <td className="hidden md:table-cell">{item.teacher}</td>
-      <td className="hidden md:table-cell">{item.dueDate}</td>
+      <td className="hidden md:table-cell">{item.date}</td>
+
 
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky">
-              <Image src="/edit.png" width={16} height={16} alt="" />
-            </button>
-          </Link>
+        
           {role === "admin" && (
-         <>
-         <FormModal table="assignment" type="update" data={item} />
-         <FormModal table="assignment" type="delete" id={item.id} />
-       </>
+             <>
+             <FormModal table="announcement" type="update" data={item} />
+             <FormModal table="announcement" type="delete" id={item.id} />
+           </>
           )}
         </div>
       </td>
@@ -41,7 +37,7 @@ const AssignmentsListPage = () => {
       {/**Top */}
       <div className="flex justify-between">
         <h1 className=" hidden md:block text-lg font-semibold">
-          All Assignments
+          All Announcements
         </h1>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
@@ -52,15 +48,17 @@ const AssignmentsListPage = () => {
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {role === "admin" && <FormModal table="assignment" type="create" />}
+            {role === "admin" && (
+              <FormModal table="announcement" type="create" />
+            )}
           </div>
         </div>
       </div>
       {/**List */}
       <Table
-        columns={assignmentsColumns}
+        columns={announcementColumns}
         renderRow={renderRow}
-        data={assignmentsData}
+        data={announcementsData}
       />
       {/**Pagination */}
 
@@ -68,4 +66,4 @@ const AssignmentsListPage = () => {
     </div>
   );
 }
-export default AssignmentsListPage
+export default AnnouncementsListPage
