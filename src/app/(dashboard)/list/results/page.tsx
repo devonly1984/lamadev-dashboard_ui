@@ -3,10 +3,10 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import {  resultsColumns } from "@/constants/columns";
-import { resultsData, role } from "@/lib/data";
+import { resultsData, role } from "../../../../lib/data";
 import {  Results,  } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const ResultsListPage = () => {
   const renderRow = (item: Results) => (

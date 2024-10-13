@@ -1,7 +1,7 @@
 "use client";
 import { performanceData } from '@/constants';
 import Image from 'next/image';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie,  ResponsiveContainer } from 'recharts';
 
 const PerformanceChart = () => {
   return (

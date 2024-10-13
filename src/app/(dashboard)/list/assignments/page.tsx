@@ -3,10 +3,10 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { assignmentsColumns } from "@/constants/columns";
-import { assignmentsData,   role,  } from "@/lib/data";
+import { assignmentsData,   role,  } from "../../../../lib/data";
 import { Assignments,  } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const AssignmentsListPage = () => {
   const renderRow = (item: Assignments) => (
@@ -21,11 +21,7 @@ const AssignmentsListPage = () => {
 
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky">
-              <Image src="/edit.png" width={16} height={16} alt="" />
-            </button>
-          </Link>
+         
           {role === "admin" && (
          <>
          <FormModal table="assignment" type="update" data={item} />

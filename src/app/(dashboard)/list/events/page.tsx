@@ -2,11 +2,11 @@ import FormModal from "@/components/modals/FormModal";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import {  eventColumns, resultsColumns } from "@/constants/columns";
-import { eventsData, resultsData, role } from "@/lib/data";
-import {  Events, Results,  } from "@/types";
+import {  eventColumns} from "@/constants/columns";
+import { eventsData, role } from "../../../../lib/data";
+import {  Events  } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const EventListPage = () => {
   const renderRow = (item: Events) => (

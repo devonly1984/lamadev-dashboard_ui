@@ -2,11 +2,11 @@ import FormModal from "@/components/modals/FormModal";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { announcementColumns, assignmentsColumns } from "@/constants/columns";
-import { announcementsData, assignmentsData,   role,  } from "@/lib/data";
-import { Announcements, Assignments,  } from "@/types";
+import { announcementColumns } from "@/constants/columns";
+import { announcementsData,    role,  } from "../../../../lib/data";
+import { Announcements } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const AnnouncementsListPage = () => {
   const renderRow = (item: Announcements) => (

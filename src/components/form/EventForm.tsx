@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from 'zod'
-import { StudentFormSchema } from "@/lib/formSchema/StudentFormSchema";
+import { StudentFormSchema } from "../../lib/formSchema/StudentFormSchema";
 import InputField from "./InputField";
 import Image from "next/image";
 

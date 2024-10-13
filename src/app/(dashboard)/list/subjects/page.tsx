@@ -3,10 +3,10 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { subjectColumns } from "@/constants/columns";
-import { role, subjectsData } from "@/lib/data";
+import { role, subjectsData } from "../../../../lib/data";
 import { Subjects } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const SubjectListPage = () => {
   const renderRow = (item: Subjects) => (

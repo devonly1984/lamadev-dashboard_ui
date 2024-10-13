@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import {menuItems} from '@/constants'
-import { role } from "@/lib/data"
+import { role } from "../../lib/data"
 const Menu = () => {
   return (
     <div className="mt-4 text-sm">

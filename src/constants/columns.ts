@@ -152,7 +152,7 @@ export const lessonsColumns = [
     accessor: "actions",
   },
 ];
-export const examsColumns = [
+export const examColumns = [
   {
     header: "Subject Name",
     accessor: "name",

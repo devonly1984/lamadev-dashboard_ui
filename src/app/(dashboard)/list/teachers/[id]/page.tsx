@@ -1,9 +1,7 @@
 import Announcements from "@/components/Announcements";
 import { BigCalendar } from "@/components/calendars";
-import StatCards from "@/components/cards/StatCards";
-import UserInfoCard from "@/components/cards/UserInfoCard";
-import PerformanceChart from "@/components/charts/PerformanceChart";
-import FormModal from "@/components/modals/FormModal";
+import { UserInfoCard,StatCards } from "@/components/cards";
+import {PerformanceChart} from "@/components/charts/"
 import Shortcuts from "@/components/shared/Shortcuts";
 
 

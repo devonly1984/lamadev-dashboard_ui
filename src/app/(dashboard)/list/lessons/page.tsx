@@ -2,11 +2,11 @@ import FormModal from "@/components/modals/FormModal";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { lessonsColumns, teacherColumns } from "@/constants/columns";
-import { lessonsData, role, teachersData } from "@/lib/data";
-import { Lessons, Teacher } from "@/types";
+import { lessonsColumns } from "@/constants/columns";
+import { lessonsData, role } from "../../../../lib/data";
+import { Lessons } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const LessonsListPage = () => {
   const renderRow = (item: Lessons) => (

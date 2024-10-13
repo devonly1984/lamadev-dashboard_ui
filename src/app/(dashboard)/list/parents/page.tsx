@@ -3,10 +3,10 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { parentColumns,   } from "@/constants/columns";
-import { parentsData, role } from "@/lib/data";
+import { parentsData, role } from "../../../../lib/data";
 import { Parent  } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const ParentListPage = () => {
   const renderRow = (item: Parent) => (

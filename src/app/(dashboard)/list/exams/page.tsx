@@ -2,11 +2,11 @@ import FormModal from "@/components/modals/FormModal";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { lessonsColumns,  } from "@/constants/columns";
-import { examsData,  role,  } from "@/lib/data";
+import { examColumns  } from "@/constants/columns";
+import { examsData,  role,  } from "../../../../lib/data";
 import { Exams, } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+
 
 const ExamsListPage = () => {
   const renderRow = (item: Exams) => (
@@ -50,7 +50,7 @@ const ExamsListPage = () => {
         </div>
       </div>
       {/**List */}
-      <Table columns={lessonsColumns} renderRow={renderRow} data={examsData} />
+      <Table columns={examColumns} renderRow={renderRow} data={examsData} />
       {/**Pagination */}
 
       <Pagination />
