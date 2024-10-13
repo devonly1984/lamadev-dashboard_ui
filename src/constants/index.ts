@@ -227,7 +227,7 @@ export const performanceData = [
   { name: 'Group B', value: 8,fill: "#FAE27C" },
 
 ];
-
+export const ITEMS_PER_PAGE=5
 
 export const events = [
   {
