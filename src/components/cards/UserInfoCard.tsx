@@ -1,4 +1,5 @@
 import Image from "next/image"
+import FormModal from "../modals/FormModal";
 interface UserInfoCardProps  {
     image:string;
     name:string;
@@ -17,7 +18,25 @@ const UserInfoCard = ({image,name}:UserInfoCardProps) => {
       </div>
       <div className="w-2/3 flex flex-col justify-between gap-4">
         <div className="flex items-center gap-4">
-          <h1 className="text-xl font-semibold">{name}</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-semibold">{name}</h1>
+            <FormModal
+              table="teacher"
+              type="update"
+              data={{
+                id: 1,
+                teacherId: "1234567890",
+                name: "John Doe",
+                email: "john@doe.com",
+                photo:
+                  "https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200",
+                phone: "1234567890",
+                subjects: ["Math", "Geometry"],
+                classes: ["1B", "2A", "3C"],
+                address: "123 Main St, Anytown, USA",
+              }}
+            />
+          </div>
         </div>
         <p className="text-sm text-gray-500">
           Proident id nisi occaecat elit commodo{" "}

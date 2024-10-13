@@ -3,6 +3,7 @@ import { BigCalendar } from "@/components/calendars";
 import StatCards from "@/components/cards/StatCards";
 import UserInfoCard from "@/components/cards/UserInfoCard";
 import PerformanceChart from "@/components/charts/PerformanceChart";
+import FormModal from "@/components/modals/FormModal";
 import Shortcuts from "@/components/shared/Shortcuts";
 
 
@@ -19,6 +20,7 @@ const SingleTeacherPage = () => {
             image="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=1200"
             name="Leonard Synder"
           />
+        
           <StatCards attendance="90%" lessons={2} branches="2" classes="6" />
         </div>
         {/**Bottom */}
