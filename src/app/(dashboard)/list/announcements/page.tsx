@@ -4,34 +4,59 @@ import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { announcementColumns } from "@/constants/columns";
 import { announcementsData,    role,  } from "../../../../lib/data";
-import { Announcements } from "@/types";
+
 import Image from "next/image";
+import { AnnouncementList } from "@/types/listindex";
+import { getAllAnnouncements } from "../../../../../prisma/queries/announcementQueries";
+import { Prisma } from "@prisma/client";
 
+const renderRow = (item: AnnouncementList) => (
+  <tr
+    key={item.id}
+    className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight "
+  >
+    <td className="flex items-center gap-4 p-4">{item.title}</td>
+    <td className="hidden md:table-cell">{item.class.name}</td>
+    <td className="hidden md:table-cell">
+      {new Intl.DateTimeFormat("en-US").format(item.date)}
+    </td>
 
-const AnnouncementsListPage = () => {
-  const renderRow = (item: Announcements) => (
-    <tr
-      key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight "
-    >
-      <td className="flex items-center gap-4 p-4">{item.title}</td>
-      <td className="hidden md:table-cell">{item.class}</td>
-      <td className="hidden md:table-cell">{item.date}</td>
+    <td>
+      <div className="flex items-center gap-2">
+        {role === "admin" && (
+          <>
+            <FormModal table="announcement" type="update" data={item} />
+            <FormModal table="announcement" type="delete" id={item.id} />
+          </>
+        )}
+      </div>
+    </td>
+  </tr>
+);
+const AnnouncementsListPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+  const query:Prisma.AnnouncementWhereInput = {}
 
-
-      <td>
-        <div className="flex items-center gap-2">
-        
-          {role === "admin" && (
-             <>
-             <FormModal table="announcement" type="update" data={item} />
-             <FormModal table="announcement" type="delete" id={item.id} />
-           </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
+  if (queryParams !==undefined) {
+    for (const [key,value] of Object.entries(queryParams)) {
+      if (value !==undefined){
+        switch (key) {
+          case "search":
+            query.title = { contains: value, mode: "insensitive" };
+            break;
+            
+          default:
+            break;
+        }
+      }
+    }
+  }
+  const [announcements, count] = await getAllAnnouncements(p, query);
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/**Top */}
@@ -58,11 +83,11 @@ const AnnouncementsListPage = () => {
       <Table
         columns={announcementColumns}
         renderRow={renderRow}
-        data={announcementsData}
+        data={announcements}
       />
       {/**Pagination */}
 
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   );
 }

@@ -2,23 +2,22 @@ import { ITEMS_PER_PAGE } from "@/constants"
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client";
 
-export const getAllStudents = async (p:number,query:Prisma.StudentWhereInput)=>{
+export const getAllSubjects = async (p:number,query:Prisma.SubjectWhereInput)=>{
     
       if (query !==undefined) {
-        const [students, count] = await prisma.$transaction([
-          prisma.student.findMany({
+        const [subjects, count] = await prisma.$transaction([
+          prisma.subject.findMany({
             where: query,
             include: {
-              class: true,
-              
+              teachers: true,
             },
             take: ITEMS_PER_PAGE,
             skip: ITEMS_PER_PAGE * (p - 1),
           }),
 
-          prisma.student.count({ where: query }),
+          prisma.subject.count({ where: query }),
         ]);
-    return [students,count];
+    return [subjects, count];
   }
    else {
     return [{}, 0];

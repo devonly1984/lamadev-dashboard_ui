@@ -7,10 +7,9 @@ import { role } from "../../../../lib/data";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Class, Subject, Teacher } from "@prisma/client";
-
+import { Prisma, Subject } from "@prisma/client";
 import { getTeachers } from "../../../../../prisma/queries/teacherQueries";
-type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] };
+import { TeacherList } from "@/types/listindex";
 const renderRow = (item: TeacherList) => (
   <tr
     key={item.id}
@@ -59,7 +58,29 @@ const TeacherListPage = async ({
 }) => {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
-  const [data, count] = await getTeachers(p);
+const query: Prisma.TeacherWhereInput={}
+  //URL PARAMS CONDITIONS
+  if (queryParams) {
+    for (const [key,value] of Object.entries(queryParams)) {
+      if (value !==undefined) {
+      switch (key) {
+        case "classId":
+          query.lessons = {
+            some: { classId: parseInt(value) },
+          };
+
+          break;
+          case 'search': 
+          query.name = { contains: value, mode: "insensitive" };
+          break;
+
+        default:
+          break;
+      }
+      }
+    }
+  }
+  const [data, count] = await getTeachers(p, query);
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/**Top */}

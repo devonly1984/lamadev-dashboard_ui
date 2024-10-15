@@ -3,38 +3,75 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import {  resultsColumns } from "@/constants/columns";
-import { resultsData, role } from "../../../../lib/data";
-import {  Results,  } from "@/types";
+import {  role } from "../../../../lib/data";
+
 import Image from "next/image";
+import { Prisma } from "@prisma/client";
+import { getAllResults } from "../../../../../prisma/queries/resultQueries";
+import { ResultList } from "@/types/listindex";
 
+const renderRow = (item: ResultList) => (
+  <tr
+    key={item.id}
+    className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight "
+  >
+    <td className="flex items-center gap-4 p-4">{item.title}</td>
 
-const ResultsListPage = () => {
-  const renderRow = (item: Results) => (
-    <tr
-      key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight "
-    >
-      <td className="flex items-center gap-4 p-4">{item.subject}</td>
+    <td>{item.studentName + " " + item.studentSurname}</td>
+    <td className="hidden md:table-cell">{item.score}</td>
+    <td className="hidden md:table-cell">
+      {item.teacherName + " " + item.teacherSurname}
+    </td>
+    <td className="hidden md:table-cell">{item.className}</td>
+    <td className="hidden md:table-cell">
+      {new Intl.DateTimeFormat("en-US").format(item.startTime)}
+    </td>
 
-      <td>{item.student}</td>
-      <td className="hidden md:table-cell">{item.score}</td>
-      <td className="hidden md:table-cell">{item.teacher}</td>
-      <td className="hidden md:table-cell">{item.class}</td>
-      <td className="hidden md:table-cell">{item.date}</td>
+    <td>
+      <div className="flex items-center gap-2">
+        {role === "admin" && (
+          <>
+            <FormModal table="result" type="update" data={item} />
+            <FormModal table="result" type="delete" id={item.id} />
+          </>
+        )}
+      </div>
+    </td>
+  </tr>
+);
+const ResultsListPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+  const query:Prisma.ResultWhereInput = {}
 
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-             
-              <FormModal table="result" type="update" data={item} />
-              <FormModal table="result" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
+  if (queryParams !==undefined) {
+    for (const [key,value] of Object.entries(queryParams)) {
+      if (value !==undefined){
+        switch (key) {
+          case "studentId":
+            query.studentId = value;
+
+            break;
+
+          case "search":
+            query.OR = [
+              { exam: { title: { contains: value, mode: "insensitive" } } },
+              { student: { name: { contains: value, mode: "insensitive" } } },
+            ];
+
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+  const [results, count] = await getAllResults(p, query);
+  
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/**Top */}
@@ -54,14 +91,10 @@ const ResultsListPage = () => {
         </div>
       </div>
       {/**List */}
-      <Table
-        columns={resultsColumns}
-        renderRow={renderRow}
-        data={resultsData}
-      />
+      <Table columns={resultsColumns} renderRow={renderRow} data={results} />
       {/**Pagination */}
 
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   );
 }

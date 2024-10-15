@@ -2,7 +2,7 @@
 import { ITEMS_PER_PAGE } from "@/constants";
 import { useRouter } from "next/navigation";
 
-const Pagination = ({ page, count }: { page: number; count: number }) => {
+const Pagination = ({ page, count }: { page: number; count: any }) => {
   const router = useRouter();
   const hasPrev = ITEMS_PER_PAGE * (page - 1) > 0;
   const hasNext = ITEMS_PER_PAGE * (page - 1) + ITEMS_PER_PAGE < count;

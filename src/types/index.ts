@@ -85,23 +85,23 @@ export type Announcements = {
     date: string;
 }
 export type FormModalProps = {
-    table:
-      | "teacher"
-      | "student"
-      | "parent"
-      | "subject"
-      | "class"
-      | "lesson"
-      | "exam"
-      | "assignment"
-      | "result"
-      | "attendance"
-      | "event"
-      | "announcement";
-    type: "create" | "update" | "delete";
-    data?: any;
-    id?: number;
-  };
+  table:
+    | "teacher"
+    | "student"
+    | "parent"
+    | "subject"
+    | "class"
+    | "lesson"
+    | "exam"
+    | "assignment"
+    | "result"
+    | "attendance"
+    | "event"
+    | "announcement";
+  type: "create" | "update" | "delete";
+  data?: any;
+  id?: number | string;
+};
   export type FormProps = {
     table:
       | "teacher"
@@ -117,6 +117,6 @@ export type FormModalProps = {
       | "event"
       | "announcement";
     type: "create" | "update" | "delete";
-    id?: number;
+    id?: number | string;
     data?: any;
   };

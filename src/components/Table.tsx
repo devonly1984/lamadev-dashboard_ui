@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-
+import {SubjectList,ParentList,StudentList, TeacherList, ClassList, LessonList} from '@/types/listindex'
 type TableProps = {
   columns: {
     header: string;

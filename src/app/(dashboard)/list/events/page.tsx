@@ -4,36 +4,75 @@ import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import {  eventColumns} from "@/constants/columns";
 import { eventsData, role } from "../../../../lib/data";
-import {  Events  } from "@/types";
+
 import Image from "next/image";
+import { EventList } from "@/types/listindex";
+import { getAllEvents } from "../../../../../prisma/queries/eventQueries";
+import { Prisma } from "@prisma/client";
 
+const renderRow = (item: EventList) => (
+  <tr
+    key={item.id}
+    className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight "
+  >
+    <td className="flex items-center gap-4 p-4">{item.title}</td>
 
-const EventListPage = () => {
-  const renderRow = (item: Events) => (
-    <tr
-      key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight "
-    >
-      <td className="flex items-center gap-4 p-4">{item.title}</td>
+    <td>{item.class.name}</td>
+    <td className="hidden md:table-cell">
+      {new Intl.DateTimeFormat("en-US").format(item.startTime)}
+    </td>
+    <td className="hidden md:table-cell">
+      {item.startTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })}
+    </td>
+    <td className="hidden md:table-cell">
+      {item.endTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })}
+    </td>
 
-      <td>{item.class}</td>
-      <td className="hidden md:table-cell">{item.date}</td>
-      <td className="hidden md:table-cell">{item.startTime}</td>
-      <td className="hidden md:table-cell">{item.endTime}</td>
+    <td>
+      <div className="flex items-center gap-2">
+        {role === "admin" && (
+          <>
+            <FormModal table="event" type="update" data={item} />
+            <FormModal table="event" type="delete" id={item.id} />
+          </>
+        )}
+      </div>
+    </td>
+  </tr>
+);
+const EventListPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+  const query: Prisma.EventWhereInput = {};
 
-      <td>
-        <div className="flex items-center gap-2">
-       
-          {role === "admin" && (
-             <>
-             <FormModal table="event" type="update" data={item} />
-             <FormModal table="event" type="delete" id={item.id} />
-           </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
+  if (queryParams !==undefined) {
+    for (const [key,value] of Object.entries(queryParams)) {
+      if (value !==undefined){
+        switch (key) {
+          case "search":
+            query.title = { contains: value, mode: "insensitive" };
+
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+  const [events, count] = await getAllEvents(p, query);
+  
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/**Top */}
@@ -53,10 +92,10 @@ const EventListPage = () => {
         </div>
       </div>
       {/**List */}
-      <Table columns={eventColumns} renderRow={renderRow} data={eventsData} />
+      <Table columns={eventColumns} renderRow={renderRow} data={events} />
       {/**Pagination */}
 
-      <Pagination />
+      <Pagination page={p} count={count}/>
     </div>
   );
 }

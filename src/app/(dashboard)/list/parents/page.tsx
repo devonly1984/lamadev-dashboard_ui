@@ -3,39 +3,65 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { parentColumns,   } from "@/constants/columns";
-import { parentsData, role } from "../../../../lib/data";
-import { Parent  } from "@/types";
+import {  role } from "../../../../lib/data";
+
 import Image from "next/image";
+import { getAllParents } from "../../../../../prisma/queries/parentQueries";
+import {  Prisma} from "@prisma/client";
+import { ParentList } from "@/types/listindex";
 
+const renderRow = (item: ParentList) => (
+  <tr
+    key={item.id}
+    className="border-b border-gray-200 even:bg-slate-50 texxt-sm hover:bg-lamaPurpleLight "
+  >
+    <td className="flex items-center gap-4 p-4">
+      <div className="flex flex-col">
+        <h3 className="font-semibold">{item.name}</h3>
+        <p className="text-xs text-gray-500">{item?.email}</p>
+      </div>
+    </td>
+    <td className="hidden md:table-cell">
+      {item.students.map((student) => student.name).join(",")}
+    </td>
 
-const ParentListPage = () => {
-  const renderRow = (item: Parent) => (
-    <tr
-      key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 texxt-sm hover:bg-lamaPurpleLight "
-    >
-      <td className="flex items-center gap-4 p-4">
-        <div className="flex flex-col">
-          <h3 className="font-semibold">{item.name}</h3>
-          <p className="text-xs text-gray-500">{item?.email}</p>
-        </div>
-      </td>
-      <td className="hidden md:table-cell">{item.students.join(",")}</td>
+    <td className="hidden md:table-cell">{item.phone}</td>
+    <td className="hidden md:table-cell">{item.address}</td>
+    <td>
+      <div className="flex items-center gap-2">
+        {role === "admin" && (
+          <>
+            <FormModal table="parent" type="update" data={item} />
+            <FormModal table="parent" type="delete" id={item.id} />
+          </>
+        )}
+      </div>
+    </td>
+  </tr>
+);
+const ParentListPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+  const query:Prisma.ParentWhereInput = {}
 
-      <td className="hidden md:table-cell">{item.phone}</td>
-      <td className="hidden md:table-cell">{item.address}</td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal table="parent" type="update" data={item} />
-              <FormModal table="parent" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
+  if (queryParams !==undefined) {
+    for (const [key,value] of Object.entries(queryParams)) {
+      if (value !==undefined){
+        switch(key) {
+             case 'search': 
+            query.name = { contains: value, mode: "insensitive" };
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+  const [parents,count] = await getAllParents(p,query)
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/**Top */}
@@ -55,10 +81,10 @@ const ParentListPage = () => {
         </div>
       </div>
       {/**List */}
-      <Table columns={parentColumns} renderRow={renderRow} data={parentsData} />
+      <Table columns={parentColumns} renderRow={renderRow} data={parents} />
       {/**Pagination */}
 
-      <Pagination />
+      <Pagination page={p} count={count}/>
     </div>
   );
 }

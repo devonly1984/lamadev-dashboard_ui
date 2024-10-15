@@ -28,7 +28,7 @@ const SingleTeacherPage = () => {
         </div>
       </div>
       <div className="w-full xl:w-1/3 flex flex-col gap-4">
-        <Shortcuts name="Teacher's" />
+        <Shortcuts name="teacher" />
         <PerformanceChart />
         <Announcements />
       </div>
