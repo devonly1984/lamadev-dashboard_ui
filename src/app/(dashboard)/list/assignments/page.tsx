@@ -3,12 +3,13 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { assignmentsColumns } from "@/constants/columns";
-import {    role,  } from "../../../../lib/data";
+
 
 import Image from "next/image";
 import { Prisma } from "@prisma/client";
 import { getAllAssignments } from "../../../../../prisma/queries/assignmentQueries";
 import { AssignmentList } from "@/types/listindex";
+import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/auth";
 
 const renderRow = (item: AssignmentList) => (
   <tr
@@ -26,7 +27,7 @@ const renderRow = (item: AssignmentList) => (
 
     <td>
       <div className="flex items-center gap-2">
-        {role === "admin" && (
+        {(isAdmin || isTeacher) && (
           <>
             <FormModal table="assignment" type="update" data={item} />
             <FormModal table="assignment" type="delete" id={item.id} />
@@ -44,26 +45,24 @@ const AssignmentsListPage = async ({
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
   const query:Prisma.AssignmentWhereInput = {}
-
+query.lesson = {}
   if (queryParams !==undefined) {
     for (const [key,value] of Object.entries(queryParams)) {
       if (value !==undefined){
         switch(key) {
           case 'classId': 
-          query.lesson = {classId:parseInt(value)};
+          query.lesson.classId=parseInt(value)
 
           break;
           case 'teacherId':
-            query.lesson = { teacherId: value };
+            query.lesson.teacherId=value; 
 
             break;
              case 'search': 
-            query.lesson = {
-              subject: {
+            query.lesson.subject= {
                 name:{contains: value,mode:'insensitive'}
-              },
-             
-            }
+              }
+            
             break;
           default:
             break;
@@ -71,8 +70,36 @@ const AssignmentsListPage = async ({
       }
     }
   }
+
+  //Role Conditions 
+  switch(role) {
+    case 'admin':
+      break;
+      case 'teacher':
+        query.lesson.teacherId = currentUserId!;
+        break;
+        case 'student': 
+        query.lesson.class = {
+          students: {
+            some: {
+              id: currentUserId!,
+            },
+          },
+        };
+        break;
+        case 'parent': 
+        query.lesson.class = {
+          students: {
+            some: {
+              parentId: currentUserId!,
+            },
+          },
+        };
+        break;
+        default:
+          break;
+  }
   const [assignments, count] = await getAllAssignments(p, query);
-  
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/**Top */}
@@ -89,7 +116,7 @@ const AssignmentsListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {role === "admin" && <FormModal table="assignment" type="create" />}
+            {isAdmin && <FormModal table="assignment" type="create" />}
           </div>
         </div>
       </div>

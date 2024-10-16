@@ -1,3 +1,4 @@
+import { isTeacher, isAdmin } from "@/app/lib/auth";
 export const teacherColumns = [
   {
     header: "Info",
@@ -59,10 +60,14 @@ export const studentColumns = [
     accessor: "address",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];
 export const parentColumns = [
   {
@@ -85,10 +90,14 @@ export const parentColumns = [
     accessor: "address",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];
 export const subjectColumns = [
   {
@@ -101,11 +110,15 @@ export const subjectColumns = [
     className: "hidden md:table-cell",
   },
 
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
-];
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+]
 export const classesColumns = [
   {
     header: "Class Name",
@@ -114,7 +127,6 @@ export const classesColumns = [
   {
     header: "Capacity",
     accessor: "capacity",
-   
   },
   {
     header: "Grade",
@@ -126,10 +138,14 @@ export const classesColumns = [
     accessor: "supervisor",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];
 export const lessonsColumns = [
   {
@@ -147,10 +163,14 @@ export const lessonsColumns = [
     className: "hidden md:table-cell",
   },
 
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];
 export const examColumns = [
   {
@@ -173,10 +193,14 @@ export const examColumns = [
     className: "hidden md:table-cell",
   },
 
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin || isTeacher
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];
 export const assignmentsColumns = [
   {
@@ -199,10 +223,14 @@ export const assignmentsColumns = [
     className: "hidden md:table-cell",
   },
 
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin || isTeacher
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];
 export const resultsColumns = [
   {
@@ -234,10 +262,14 @@ export const resultsColumns = [
     accessor: "date",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin || isTeacher
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];
 export const eventColumns = [
   {
@@ -254,12 +286,15 @@ export const eventColumns = [
     accessor: "date",
     className: "hidden md:table-cell",
   },
- 
 
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];
 export const announcementColumns = [
   {
@@ -276,10 +311,13 @@ export const announcementColumns = [
     accessor: "date",
     className: "hidden md:table-cell",
   },
- 
 
-  {
-    header: "Actions",
-    accessor: "actions",
-  },
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
 ];

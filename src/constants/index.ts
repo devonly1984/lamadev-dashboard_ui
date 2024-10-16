@@ -113,26 +113,7 @@ export const menuItems = [
   },
 ];
 
-export const genderData = [
-  {
-    name: "Total",
-    count: 106,
 
-    fill: "white",
-  },
-  {
-    name: "Girls",
-    count: 53,
-
-    fill: "#FAE27C",
-  },
-  {
-    name: "Boys",
-    count: 53,
-
-    fill: "#C3EBFA",
-  },
-];
 export const attendance = [
   {
     name: "Mon",
@@ -223,11 +204,10 @@ export const financeData = [
   },
 ];
 export const performanceData = [
-  { name: 'Group A', value: 92,fill: "#C3EBFA" },
-  { name: 'Group B', value: 8,fill: "#FAE27C" },
-
+  { name: "Group A", value: 92, fill: "#C3EBFA" },
+  { name: "Group B", value: 8, fill: "#FAE27C" },
 ];
-export const ITEMS_PER_PAGE=5
+export const ITEMS_PER_PAGE = 5;
 
 export const events = [
   {

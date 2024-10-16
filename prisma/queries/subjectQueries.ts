@@ -1,5 +1,5 @@
 import { ITEMS_PER_PAGE } from "@/constants"
-import prisma from "@/lib/prisma"
+import prisma from "@/app/lib/prisma"
 import { Prisma } from "@prisma/client";
 
 export const getAllSubjects = async (p:number,query:Prisma.SubjectWhereInput)=>{

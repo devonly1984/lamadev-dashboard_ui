@@ -2,8 +2,8 @@ import FormModal from "@/components/modals/FormModal";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import {  eventColumns} from "@/constants/columns";
-import { eventsData, role } from "../../../../lib/data";
+import {  eventColumns, studentColumns} from "@/constants/columns";
+import { currentUserId, isAdmin, role } from "@/app/lib/auth";
 
 import Image from "next/image";
 import { EventList } from "@/types/listindex";
@@ -17,7 +17,7 @@ const renderRow = (item: EventList) => (
   >
     <td className="flex items-center gap-4 p-4">{item.title}</td>
 
-    <td>{item.class.name}</td>
+    <td>{item.class?.name || "-"}</td>
     <td className="hidden md:table-cell">
       {new Intl.DateTimeFormat("en-US").format(item.startTime)}
     </td>
@@ -38,7 +38,7 @@ const renderRow = (item: EventList) => (
 
     <td>
       <div className="flex items-center gap-2">
-        {role === "admin" && (
+        {isAdmin && (
           <>
             <FormModal table="event" type="update" data={item} />
             <FormModal table="event" type="delete" id={item.id} />
@@ -71,6 +71,22 @@ const EventListPage = async ({
       }
     }
   }
+  //Role Conditions
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: currentUserId! } } },
+    student: { students: { some: { id: currentUserId! } } },
+    parent: {
+      students: {
+        some: { parentId: currentUserId! },
+      },
+    },
+  };
+  query.OR = [
+    { classId: null },
+    {
+      class: roleConditions[role as keyof typeof roleConditions] || {},
+    },
+  ];
   const [events, count] = await getAllEvents(p, query);
   
   return (
@@ -87,7 +103,7 @@ const EventListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {role === "admin" && <FormModal table="event" type="create" />}
+            {isAdmin && <FormModal table="event" type="create" />}
           </div>
         </div>
       </div>

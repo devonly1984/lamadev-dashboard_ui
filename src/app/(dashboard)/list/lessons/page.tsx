@@ -3,7 +3,7 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { lessonsColumns } from "@/constants/columns";
-import {  role } from "../../../../lib/data";
+import { isAdmin } from "@/app/lib/auth";
 
 import Image from "next/image";
 import { LessonList } from "@/types/listindex";
@@ -21,7 +21,7 @@ const renderRow = (item: LessonList) => (
 
     <td>
       <div className="flex items-center gap-2">
-        {role === "admin" && (
+        {isAdmin && (
           <>
             <FormModal table="lesson" type="update" data={item} />
             <FormModal table="lesson" type="delete" id={item.id} />
@@ -78,7 +78,7 @@ const LessonsListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {role === "admin" && <FormModal table="lesson" type="create" />}
+            {isAdmin && <FormModal table="lesson" type="create" />}
           </div>
         </div>
       </div>

@@ -1,21 +1,36 @@
 import { events } from "@/constants"
+import prisma from "@/app/lib/prisma";
 
-const EventCard = () => {
-  return (
-    <div className="flex flex-col gap-4">
-        { events.map((event) => (
-          <div
-            className="p-5 rounded-md border-2 border-gray-100 border-t-4 odd:border-t-lamaSky even:border-t-lamaPurple"
-            key={event.id}
-          >
-            <div className="flex items-center justify-between">
-              <h1 className="text-gray-600 font-semibold">{event.title}</h1>
-              <span className="text-gray-300 text-xs">{event.time}</span>
-            </div>
-            <p className="mt-2 text-gray-400 text-sm">{event.description}</p>
+const EventCard = async ({ dateParam }: { dateParam: string | undefined }) => {
+  const date = dateParam ? new Date(dateParam) : new Date();
+  const data = await prisma.event.findMany({
+    where: {
+      startTime: {
+        gte: new Date(date.setHours(0, 0, 0, 0)),
+        lte: new Date(date.setHours(23, 59, 59, 999)),
+      },
+    },
+  });
+
+  return (data.map((event) => (
+        <div
+          className="p-5 rounded-md border-2 border-gray-100 border-t-4 odd:border-t-lamaSky even:border-t-lamaPurple"
+          key={event.id}
+        >
+          <div className="flex items-center justify-between">
+            <h1 className="text-gray-600 font-semibold">{event.title}</h1>
+            <span className="text-gray-300 text-xs">
+              {event.startTime.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              })}
+            </span>
           </div>
-        ))}
-      </div>
-  )
-}
-export default EventCard
+          <p className="mt-2 text-gray-400 text-sm">{event.description}</p>
+        </div>
+      ))
+    
+  );
+};
+export default EventCard;

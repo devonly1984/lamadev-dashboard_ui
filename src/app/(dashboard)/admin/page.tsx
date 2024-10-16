@@ -1,9 +1,15 @@
 import Announcements from "@/components/Announcements";
-import {EventCalendar} from "@/components/calendars";
+import EventCalendarContainer from "@/components/calendars/EventCalendarContainer";
 import {UserCard} from "@/components/cards";
-import { AttendanceChart, CountChart, FinanceChart } from "@/components/charts";
+import {   FinanceChart } from "@/components/charts";
+import AttendanceChartContainer from "@/components/charts/AttendanceChartContainer";
+import CountChartContainer from "@/components/charts/CountChartContainer";
 
-const AdminPage = () => {
+const AdminPage = ({
+  searchParams,
+}: {
+  searchParams: { [keys: string]: string | undefined };
+})=>{
   return (
     <div className="flex p-4 gap-4 flex-col md:flex-row">
       {/**Left */}
@@ -12,18 +18,18 @@ const AdminPage = () => {
           <UserCard type="student" />
           <UserCard type="teacher" />
           <UserCard type="parent" />
-          <UserCard type="staff" />
+          <UserCard type="admin" />
         </div>
         <div className="flex gap-4 flex-col lg:flex-row">
           {/**Middle Charts */}
           <div className="w-full lg:w-1/3 h-[450px]">
             {/**Count Chart */}
-            <CountChart />
+            <CountChartContainer />
           </div>
 
           <div className="w-full lg:w-2/3 h-[450px]">
             {/**Attendance Chart*/}
-            <AttendanceChart />
+            <AttendanceChartContainer />
           </div>
         </div>
         <div className="w-full h-[500px]">
@@ -33,7 +39,7 @@ const AdminPage = () => {
       </div>
       {/**Right */}
       <div className="w-full lg:w-1/3 flex flex-col gap-8">
-        <EventCalendar />
+        <EventCalendarContainer searchParams={searchParams} />
         <Announcements />
       </div>
     </div>

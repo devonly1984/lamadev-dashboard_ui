@@ -3,7 +3,7 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import {  resultsColumns } from "@/constants/columns";
-import {  role } from "../../../../lib/data";
+import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/auth";
 
 import Image from "next/image";
 import { Prisma } from "@prisma/client";
@@ -29,7 +29,7 @@ const renderRow = (item: ResultList) => (
 
     <td>
       <div className="flex items-center gap-2">
-        {role === "admin" && (
+        {(isAdmin || isTeacher) && (
           <>
             <FormModal table="result" type="update" data={item} />
             <FormModal table="result" type="delete" id={item.id} />
@@ -70,6 +70,28 @@ const ResultsListPage = async ({
       }
     }
   }
+  //Role Conditions
+
+  switch(role) {
+    case 'admin':
+      break;
+      case 'teacher':
+        query.OR = [
+          { exam: { lesson: { teacherId: currentUserId! } } },
+          { assignment: { lesson: { teacherId: currentUserId! } } },
+        ];
+        break;
+        case 'student':
+          query.studentId = currentUserId!;
+          break;
+          case 'parent':
+            query.student = {
+              parentId: currentUserId!,
+            };
+            break;
+    default:
+      break;
+  }
   const [results, count] = await getAllResults(p, query);
   
   return (
@@ -86,7 +108,9 @@ const ResultsListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {role === "admin" && <FormModal table="result" type="create" />}
+            {(isAdmin || isTeacher) && (
+              <FormModal table="result" type="create" />
+            )}
           </div>
         </div>
       </div>

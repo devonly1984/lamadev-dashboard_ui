@@ -3,13 +3,13 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { teacherColumns } from "@/constants/columns";
-import { role } from "../../../../lib/data";
-
 import Image from "next/image";
 import Link from "next/link";
 import { Prisma, Subject } from "@prisma/client";
 import { getTeachers } from "../../../../../prisma/queries/teacherQueries";
 import { TeacherList } from "@/types/listindex";
+import { role } from "@/app/lib/auth";
+
 const renderRow = (item: TeacherList) => (
   <tr
     key={item.id}
@@ -56,6 +56,7 @@ const TeacherListPage = async ({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
+
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 const query: Prisma.TeacherWhereInput={}
@@ -81,6 +82,7 @@ const query: Prisma.TeacherWhereInput={}
     }
   }
   const [data, count] = await getTeachers(p, query);
+ 
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/**Top */}

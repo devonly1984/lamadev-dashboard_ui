@@ -3,7 +3,7 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { subjectColumns } from "@/constants/columns";
-import { role,  } from "../../../../lib/data";
+import { isAdmin } from "@/app/lib/auth";
 import { SubjectList } from "@/types/listindex";
 import Image from "next/image";
 import { Prisma, } from "@prisma/client";
@@ -21,7 +21,7 @@ const renderRow = (item: SubjectList) => (
 
     <td>
       <div className="flex items-center gap-2">
-        {role === "admin" && (
+        {isAdmin && (
           <>
             <FormModal table="subject" type="update" data={item} />
             <FormModal table="subject" type="delete" id={item.id} />
@@ -69,7 +69,7 @@ const SubjectListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {role === "admin" && <FormModal table="subject" type="create" />}
+            {isAdmin && <FormModal table="subject" type="create" />}
           </div>
         </div>
       </div>
