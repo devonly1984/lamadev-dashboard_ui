@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const StudentFormSchema = z.object({
+export const StudentSchema = z.object({
   username: z
     .string()
     .min(8, { message: "Username must be at least 8 characters" })
@@ -20,3 +20,4 @@ export const StudentFormSchema = z.object({
   sex: z.enum(["male", "female"]),
   img: z.instanceof(File, { message: "Image is required" }),
 });
+export type StudentInputs = z.infer<typeof StudentSchema>;

@@ -19,19 +19,11 @@ export type FormContainerProps = {
   id?: number | string;
 };
 
-export type StudentFormProps = {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-};
-export type TeacherFormProps = {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-};
-export type SubjectFormProps = {
+
+export type FormProps = {
   type: "create" | "update";
   data?: any;
   setOpen: Dispatch<SetStateAction<boolean>>;
   relatedData?: any;
 };
+export type CurrentState = { success: boolean; error: boolean }

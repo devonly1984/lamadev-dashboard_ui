@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormState } from "react-dom";
 import InputField from "./InputField";
-import { subjectFormSchema, SubjectInputs } from "@/app/lib/formSchema/SubjectFormSchema";
+import { subjectSchema, SubjectInputs } from "@/app/lib/formSchema/SubjectSchema";
 import { createSubject, updateSubject } from "@/actions/SubjectActions";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { SubjectFormProps } from "@/types/formTypes";
+import { FormProps } from "@/types/formTypes";
 
 
 const SubjectForm = ({
@@ -17,13 +17,13 @@ const SubjectForm = ({
   data,
   setOpen,
   relatedData,
-}: SubjectFormProps) => {
+}: FormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SubjectInputs>({
-    resolver: zodResolver(subjectFormSchema),
+    resolver: zodResolver(subjectSchema),
   });
   const [state, formAction] = useFormState(
     type === "create" ? createSubject : updateSubject,
@@ -43,7 +43,7 @@ const SubjectForm = ({
       router.refresh();
       setOpen(false);
     }
-  }, [state]);
+  }, [state, router, setOpen, type]);
   const  {teachers} = relatedData;
 
   return (

@@ -1,4 +1,6 @@
+import { deleteClass } from "@/actions/ClassActions";
 import { deleteSubject } from "@/actions/SubjectActions";
+import { deleteTeacher } from "@/actions/TeacherActions";
 import { auth } from "@clerk/nextjs/server";
 
 
@@ -57,12 +59,12 @@ export const adjustScheduleToCurrentWeek = (lessons:{title:string,start:Date,end
 export const deleteActionMap = {
   announcement: deleteSubject,
   assignment: deleteSubject,
-  class: deleteSubject,
+  class: deleteClass,
   event: deleteSubject,
   exam: deleteSubject,
   lesson: deleteSubject,
   parent: deleteSubject,
   subject: deleteSubject,
   student: deleteSubject,
-  teacher: deleteSubject,
+  teacher: deleteTeacher,
 };

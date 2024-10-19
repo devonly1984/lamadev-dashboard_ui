@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from 'zod'
-import { StudentFormSchema } from "../../app/lib/formSchema/StudentFormSchema";
+import { StudentInputs, StudentSchema } from "../../app/lib/formSchema/StudentSchema";
 import InputField from "./InputField";
 import Image from "next/image";
 
@@ -14,10 +14,10 @@ const StudentForm = ({ type, data }: StudentFormProps) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof StudentFormSchema>>({
-    resolver: zodResolver(StudentFormSchema),
+  } = useForm<StudentInputs>({
+    resolver: zodResolver(StudentSchema),
   });
-  const onSubmit = (data: z.infer<typeof StudentFormSchema>) => {
+  const onSubmit = (data: StudentInputs) => {
     console.log(data);
   };
   return (

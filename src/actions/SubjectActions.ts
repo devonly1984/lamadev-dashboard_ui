@@ -1,13 +1,11 @@
 "use server";
 
-import {
-  
-  SubjectInputs,
-} from "@/app/lib/formSchema/SubjectFormSchema";
+import {SubjectInputs} from "@/app/lib/formSchema/SubjectSchema";
 import prisma from "@/app/lib/prisma";
+import { CurrentState } from "@/types/formTypes";
 
 
-type CurrentState = { success: boolean; error: boolean }
+
 export const createSubject = async (
   currentState: CurrentState,
   data: SubjectInputs

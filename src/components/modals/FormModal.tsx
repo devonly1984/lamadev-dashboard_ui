@@ -1,6 +1,4 @@
-"use client"
-
-
+"use client";
 
 import { deleteActionMap } from "@/app/lib/utils";
 import { FormContainerProps } from "@/types/formTypes";
@@ -56,7 +54,12 @@ const forms: {
   ) => JSX.Element;
 } = {
   teacher: (type, data, setOpen) => (
-    <TeacherForm type={type} data={data} setOpen={setOpen} />
+    <TeacherForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
   ),
   student: (type, data, setOpen) => (
     <StudentForm type={type} data={data} setOpen={setOpen} />
@@ -65,10 +68,20 @@ const forms: {
     <ParentForm type={type} data={data} setOpen={setOpen} />
   ),
   subject: (type, data, setOpen) => (
-    <SubjectForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />
+    <SubjectForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
   ),
   class: (type, data, setOpen) => (
-    <ClassForm type={type} data={data} setOpen={setOpen} />
+    <ClassForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
   ),
   lesson: (type, data, setOpen) => (
     <LessonForm type={type} data={data} setOpen={setOpen} />
@@ -93,7 +106,6 @@ const forms: {
   ),
 };
 
-
 const FormModal = ({
   table,
   type,
@@ -111,7 +123,10 @@ const FormModal = ({
   const [open, setOpen] = useState(false);
 
   const Form = () => {
-    const [state,formAction] = useFormState(deleteActionMap[table],{success:false,error:false});
+    const [state, formAction] = useFormState(deleteActionMap[table], {
+      success: false,
+      error: false,
+    });
     const router = useRouter();
     useEffect(() => {
       if (state.success) {
@@ -119,7 +134,7 @@ const FormModal = ({
         router.refresh();
         setOpen(false);
       }
-    }, [state]);
+    }, [state, router]);
     return type === "delete" && id ? (
       <form action={formAction} className="p-4 flex flex-col gap-4">
         <input type="text|number" name="id" value={id} hidden />
@@ -134,7 +149,7 @@ const FormModal = ({
         </button>
       </form>
     ) : type === "create" || type === "update" ? (
-      forms[table](type, data, setOpen,relatedData)
+      forms[table](type, data, setOpen, relatedData)
     ) : (
       "Form not found"
     );
@@ -150,13 +165,7 @@ const FormModal = ({
       {open && (
         <div className="w-screen h-screen absolute top-0 left-0 bg-black bg-opacity-60 z-50 flex items-center justify-center ">
           <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]">
-            <Form
-              table={table}
-              type={type}
-              id={id}
-              data={data}
-              setOpen={setOpen}
-            />
+            <Form />
             <div
               className="absolute top-4 right-4 cursor-pinter "
               onClick={() => setOpen(false)}
