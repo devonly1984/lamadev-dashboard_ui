@@ -1,9 +1,9 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import {  resultsColumns } from "@/constants/columns";
-import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/auth";
+import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/utils";
 
 import Image from "next/image";
 import { Prisma } from "@prisma/client";
@@ -31,8 +31,8 @@ const renderRow = (item: ResultList) => (
       <div className="flex items-center gap-2">
         {(isAdmin || isTeacher) && (
           <>
-            <FormModal table="result" type="update" data={item} />
-            <FormModal table="result" type="delete" id={item.id} />
+            <FormContainer table="result" type="update" data={item} />
+            <FormContainer table="result" type="delete" id={item.id} />
           </>
         )}
       </div>
@@ -109,7 +109,7 @@ const ResultsListPage = async ({
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
             {(isAdmin || isTeacher) && (
-              <FormModal table="result" type="create" />
+              <FormContainer table="result" type="create" />
             )}
           </div>
         </div>

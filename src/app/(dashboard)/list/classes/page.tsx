@@ -1,9 +1,9 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { classesColumns } from "@/constants/columns";
-import { isAdmin, role } from "@/app/lib/auth";
+import { isAdmin, role } from "@/app/lib/utils";
 import Image from "next/image";
 import { ClassList } from "@/types/listindex";
 
@@ -25,8 +25,8 @@ const renderRow = (item: ClassList) => (
    
         {isAdmin && (
            <>
-           <FormModal table="class" type="update" data={item} />
-           <FormModal table="class" type="delete" id={item.id} />
+           <FormContainer table="class" type="update" data={item} />
+           <FormContainer table="class" type="delete" id={item.id} />
          </>
         )}
       </div>
@@ -74,7 +74,7 @@ const ClassesListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {isAdmin && <FormModal table="class" type="create" />}
+            {isAdmin && <FormContainer table="class" type="create" />}
           </div>
         </div>
       </div>

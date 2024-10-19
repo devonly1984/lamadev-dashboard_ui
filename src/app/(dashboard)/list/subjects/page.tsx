@@ -1,9 +1,9 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { subjectColumns } from "@/constants/columns";
-import { isAdmin } from "@/app/lib/auth";
+import { isAdmin } from "@/app/lib/utils";
 import { SubjectList } from "@/types/listindex";
 import Image from "next/image";
 import { Prisma, } from "@prisma/client";
@@ -23,8 +23,8 @@ const renderRow = (item: SubjectList) => (
       <div className="flex items-center gap-2">
         {isAdmin && (
           <>
-            <FormModal table="subject" type="update" data={item} />
-            <FormModal table="subject" type="delete" id={item.id} />
+            <FormContainer table="subject" type="update" data={item} />
+            <FormContainer table="subject" type="delete" id={item.id} />
           </>
         )}
       </div>
@@ -69,7 +69,7 @@ const SubjectListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {isAdmin && <FormModal table="subject" type="create" />}
+            {isAdmin && <FormContainer table="subject" type="create" />}
           </div>
         </div>
       </div>

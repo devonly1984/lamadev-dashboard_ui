@@ -1,5 +1,5 @@
 import Image from "next/image"
-import FormModal from "../modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 interface UserInfoCardProps  {
     image:string;
     name:string;
@@ -20,7 +20,7 @@ const UserInfoCard = ({image,name}:UserInfoCardProps) => {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-semibold">{name}</h1>
-            <FormModal
+            <FormContainer
               table="teacher"
               type="update"
               data={{

@@ -1,4 +1,4 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import { AnnouncementList } from "@/types/listindex";
 import { getAllAnnouncements } from "../../../../../prisma/queries/announcementQueries";
 import { Prisma } from "@prisma/client";
-import { currentUserId, isAdmin, role } from "@/app/lib/auth";
+import { currentUserId, isAdmin, role } from "@/app/lib/utils";
 const renderRow = (item: AnnouncementList) => (
   <tr
     key={item.id}
@@ -25,8 +25,8 @@ const renderRow = (item: AnnouncementList) => (
       <div className="flex items-center gap-2">
         {isAdmin && (
           <>
-            <FormModal table="announcement" type="update" data={item} />
-            <FormModal table="announcement" type="delete" id={item.id} />
+            <FormContainer table="announcement" type="update" data={item} />
+            <FormContainer table="announcement" type="delete" id={item.id} />
           </>
         )}
       </div>
@@ -89,7 +89,7 @@ const AnnouncementsListPage = async ({
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
             {isAdmin && (
-              <FormModal table="announcement" type="create" />
+              <FormContainer table="announcement" type="create" />
             )}
           </div>
         </div>

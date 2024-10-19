@@ -1,9 +1,9 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { lessonsColumns } from "@/constants/columns";
-import { isAdmin } from "@/app/lib/auth";
+import { isAdmin } from "@/app/lib/utils";
 
 import Image from "next/image";
 import { LessonList } from "@/types/listindex";
@@ -23,8 +23,8 @@ const renderRow = (item: LessonList) => (
       <div className="flex items-center gap-2">
         {isAdmin && (
           <>
-            <FormModal table="lesson" type="update" data={item} />
-            <FormModal table="lesson" type="delete" id={item.id} />
+            <FormContainer table="lesson" type="update" data={item} />
+            <FormContainer table="lesson" type="delete" id={item.id} />
           </>
         )}
       </div>
@@ -78,7 +78,7 @@ const LessonsListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {isAdmin && <FormModal table="lesson" type="create" />}
+            {isAdmin && <FormContainer table="lesson" type="create" />}
           </div>
         </div>
       </div>

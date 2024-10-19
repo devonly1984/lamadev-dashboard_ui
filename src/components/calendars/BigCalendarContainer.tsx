@@ -1,5 +1,7 @@
-import prisma from "@/app/lib/prisma";
+
 import BigCalendar from "./BigCalendar";
+import { getCalendar } from "../../../prisma/queries/lessonQueries";
+import { adjustScheduleToCurrentWeek } from "@/app/lib/utils";
 
 const BigCalendarContainer = async ({
   type,
@@ -8,21 +10,12 @@ const BigCalendarContainer = async ({
   type: "teacherId" | "classId";
   id: string | number;
 }) => {
-    const datares = await prisma.lesson.findMany({
-      where: {
-        ...(type === "teacherId"
-          ? { teacherId: id as string }
-          : { classId: id as number }),
-      },
-    });
-    const data = datares.map((lesson) => ({
-      title: lesson.name,
-      start: lesson.startTime,
-      end: lesson.endTime,
-    }));
+    const data = await getCalendar(type,id);
+    const adjustSchedule = adjustScheduleToCurrentWeek(data);
+
   return (
     <div>
-      <BigCalendar data={data} />
+      <BigCalendar data={adjustSchedule} />
     </div>
   );
 };

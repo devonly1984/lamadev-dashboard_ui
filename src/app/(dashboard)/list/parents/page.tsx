@@ -1,9 +1,9 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { parentColumns,   } from "@/constants/columns";
-import { isAdmin} from "@/app/lib/auth";
+import { isAdmin} from "@/app/lib/utils";
 
 import Image from "next/image";
 import { getAllParents } from "../../../../../prisma/queries/parentQueries";
@@ -31,8 +31,8 @@ const renderRow = (item: ParentList) => (
       <div className="flex items-center gap-2">
         {isAdmin && (
           <>
-            <FormModal table="parent" type="update" data={item} />
-            <FormModal table="parent" type="delete" id={item.id} />
+            <FormContainer table="parent" type="update" data={item} />
+            <FormContainer table="parent" type="delete" id={item.id} />
           </>
         )}
       </div>
@@ -76,7 +76,7 @@ const ParentListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {isAdmin && <FormModal table="parent" type="create" />}
+            {isAdmin && <FormContainer table="parent" type="create" />}
           </div>
         </div>
       </div>

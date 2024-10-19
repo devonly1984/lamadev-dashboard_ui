@@ -1,4 +1,4 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import { Prisma } from "@prisma/client";
 import { getAllAssignments } from "../../../../../prisma/queries/assignmentQueries";
 import { AssignmentList } from "@/types/listindex";
-import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/auth";
+import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/utils";
 
 const renderRow = (item: AssignmentList) => (
   <tr
@@ -29,8 +29,8 @@ const renderRow = (item: AssignmentList) => (
       <div className="flex items-center gap-2">
         {(isAdmin || isTeacher) && (
           <>
-            <FormModal table="assignment" type="update" data={item} />
-            <FormModal table="assignment" type="delete" id={item.id} />
+            <FormContainer table="assignment" type="update" data={item} />
+            <FormContainer table="assignment" type="delete" id={item.id} />
           </>
         )}
       </div>
@@ -116,7 +116,7 @@ query.lesson = {}
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {isAdmin && <FormModal table="assignment" type="create" />}
+            {isAdmin && <FormContainer table="assignment" type="create" />}
           </div>
         </div>
       </div>

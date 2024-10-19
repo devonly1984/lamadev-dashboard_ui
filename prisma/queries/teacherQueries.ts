@@ -26,7 +26,4 @@ export const getTeachers = async (
   } else {
     return [{}, 0];
   }
-
- 
- 
 };

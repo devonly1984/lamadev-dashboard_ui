@@ -1,3 +1,5 @@
+
+
 export type  Teacher = {
     id: number,
     teacherId: string;
@@ -84,39 +86,3 @@ export type Announcements = {
     class: string;
     date: string;
 }
-export type FormModalProps = {
-  table:
-    | "teacher"
-    | "student"
-    | "parent"
-    | "subject"
-    | "class"
-    | "lesson"
-    | "exam"
-    | "assignment"
-    | "result"
-    | "attendance"
-    | "event"
-    | "announcement";
-  type: "create" | "update" | "delete";
-  data?: any;
-  id?: number | string;
-};
-  export type FormProps = {
-    table:
-      | "teacher"
-      | "student"
-      | "parent"
-      | "subject"
-      | "class"
-      | "lesson"
-      | "exam"
-      | "assignment"
-      | "result"
-      | "attendance"
-      | "event"
-      | "announcement";
-    type: "create" | "update" | "delete";
-    id?: number | string;
-    data?: any;
-  };

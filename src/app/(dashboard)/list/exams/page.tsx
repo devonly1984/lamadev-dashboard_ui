@@ -1,9 +1,9 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { examColumns  } from "@/constants/columns";
-import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/auth";
+import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/utils";
 
 import Image from "next/image";
 import { Prisma } from "@prisma/client";
@@ -28,8 +28,8 @@ const renderRow = (item: ExamList) => (
       <div className="flex items-center gap-2">
         {(isAdmin || isTeacher) && (
           <>
-            <FormModal table="exam" type="update" data={item} />
-            <FormModal table="exam" type="delete" id={item.id} />
+            <FormContainer table="exam" type="update" data={item} />
+            <FormContainer table="exam" type="delete" id={item.id} />
           </>
         )}
       </div>
@@ -111,7 +111,7 @@ const ExamsListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {isAdmin && <FormModal table="exam" type="create" />}
+            {isAdmin && <FormContainer table="exam" type="create" />}
           </div>
         </div>
       </div>

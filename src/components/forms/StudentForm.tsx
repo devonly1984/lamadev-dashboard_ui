@@ -3,33 +3,29 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from 'zod'
-import { TeacherFormSchema } from "../../app/lib/formSchema/TeacherFormSchema";
+import { StudentFormSchema } from "../../app/lib/formSchema/StudentFormSchema";
 import InputField from "./InputField";
 import Image from "next/image";
-const TeacherForm = ({
-  type,
-  data,
-}: {
-  type: "create" | "update";
-  data?: any;
-}) => {
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm<z.infer <typeof TeacherFormSchema>>({
-        resolver: zodResolver(TeacherFormSchema)
-    });
-    const onSubmit = (data: z.infer<typeof TeacherFormSchema>) => {
-      console.log(data);
-    };
+
+import { StudentFormProps } from "@/types/formTypes";
+
+const StudentForm = ({ type, data }: StudentFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof StudentFormSchema>>({
+    resolver: zodResolver(StudentFormSchema),
+  });
+  const onSubmit = (data: z.infer<typeof StudentFormSchema>) => {
+    console.log(data);
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
       <h1 className="text-xl font-semibold capitalize">
-        {" "}
         {type === "create"
-          ? ` Create a new Teacher`
-          : `Update an existing Teacher`}
+          ? ` Create a new Student`
+          : `Update an existing Student`}
       </h1>
       <span className="text-xs text-gray-400 font-medium">
         Authentication Information
@@ -150,4 +146,4 @@ const TeacherForm = ({
     </form>
   );
 };
-export default TeacherForm
+export default StudentForm;

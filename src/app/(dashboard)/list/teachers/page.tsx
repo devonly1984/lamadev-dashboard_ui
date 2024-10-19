@@ -1,4 +1,4 @@
-import FormModal from "@/components/modals/FormModal";
+import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Prisma, Subject } from "@prisma/client";
 import { getTeachers } from "../../../../../prisma/queries/teacherQueries";
 import { TeacherList } from "@/types/listindex";
-import { role } from "@/app/lib/auth";
+import { role } from "@/app/lib/utils";
 
 const renderRow = (item: TeacherList) => (
   <tr
@@ -45,7 +45,7 @@ const renderRow = (item: TeacherList) => (
           </button>
         </Link>
         {role === "admin" && (
-          <FormModal table="teacher" type="delete" id={parseInt(item.id)} />
+          <FormContainer table="teacher" type="delete" id={parseInt(item.id)} />
         )}
       </div>
     </td>
@@ -97,7 +97,7 @@ const query: Prisma.TeacherWhereInput={}
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {role === "admin" && <FormModal table="teacher" type="create" />}
+            {role === "admin" && <FormContainer table="teacher" type="create" />}
           </div>
         </div>
       </div>

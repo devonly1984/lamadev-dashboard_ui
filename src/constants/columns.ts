@@ -1,4 +1,4 @@
-import { isTeacher, isAdmin } from "@/app/lib/auth";
+import { isTeacher, isAdmin } from "@/app/lib/utils";
 export const teacherColumns = [
   {
     header: "Info",
