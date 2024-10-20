@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Prisma, Subject } from "@prisma/client";
 import { getTeachers } from "../../../../../prisma/queries/teacherQueries";
 import { TeacherList } from "@/types/listindex";
-import { role } from "@/app/lib/utils";
+import { role } from "@/app/lib/data";
 
 const renderRow = (item: TeacherList) => (
   <tr

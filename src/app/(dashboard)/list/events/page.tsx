@@ -2,8 +2,8 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import {  eventColumns, studentColumns} from "@/constants/columns";
-import { currentUserId, isAdmin, role } from "@/app/lib/utils";
+import {  eventColumns} from "@/constants/columns";
+import { currentUserId, isAdmin, role } from "@/app/lib/data";
 
 import Image from "next/image";
 import { EventList } from "@/types/listindex";

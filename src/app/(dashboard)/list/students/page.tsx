@@ -3,7 +3,7 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { studentColumns,  } from "@/constants/columns";
-import { role } from "@/app/lib/utils";
+import { role } from "@/app/lib/data";
 
 import Image from "next/image";
 import Link from "next/link";

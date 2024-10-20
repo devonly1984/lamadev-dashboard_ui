@@ -3,7 +3,7 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import {  resultsColumns } from "@/constants/columns";
-import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/utils";
+import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/data";
 
 import Image from "next/image";
 import { Prisma } from "@prisma/client";

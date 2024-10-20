@@ -9,7 +9,7 @@ import Image from "next/image";
 import { Prisma } from "@prisma/client";
 import { getAllAssignments } from "../../../../../prisma/queries/assignmentQueries";
 import { AssignmentList } from "@/types/listindex";
-import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/utils";
+import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/data";
 
 const renderRow = (item: AssignmentList) => (
   <tr

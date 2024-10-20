@@ -9,7 +9,7 @@ import Image from "next/image";
 import { AnnouncementList } from "@/types/listindex";
 import { getAllAnnouncements } from "../../../../../prisma/queries/announcementQueries";
 import { Prisma } from "@prisma/client";
-import { currentUserId, isAdmin, role } from "@/app/lib/utils";
+import { currentUserId, isAdmin, role } from "@/app/lib/data";
 const renderRow = (item: AnnouncementList) => (
   <tr
     key={item.id}

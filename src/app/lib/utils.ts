@@ -1,14 +1,9 @@
 import { deleteClass } from "@/actions/ClassActions";
 import { deleteSubject } from "@/actions/SubjectActions";
 import { deleteTeacher } from "@/actions/TeacherActions";
-import { auth } from "@clerk/nextjs/server";
 
 
-const { userId, sessionClaims } = auth();
-export const role = (sessionClaims?.metadata as { role?: string })?.role;
-export const currentUserId = userId;
-export const isAdmin = role==='admin';
-export const isTeacher = role==='teacher';
+
 const currentWorkWeek = ()=>{
     const today = new Date();
     const dayOfWeek = today.getDay();

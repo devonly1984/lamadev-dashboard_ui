@@ -1,7 +1,14 @@
 // TEMPORARY DATA
 
+import { auth } from "@clerk/nextjs/server";
+
 //export let role = "admin";
 
+const { userId, sessionClaims } = auth();
+export const role = (sessionClaims?.metadata as { role?: string })?.role;
+export const currentUserId = userId;
+export const isAdmin = role==='admin';
+export const isTeacher = role==='teacher';
 export const teachersData = [
   {
     id: 1,

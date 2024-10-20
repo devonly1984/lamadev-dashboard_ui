@@ -3,7 +3,7 @@ import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
 import { parentColumns,   } from "@/constants/columns";
-import { isAdmin} from "@/app/lib/utils";
+import { isAdmin} from "@/app/lib/data";
 
 import Image from "next/image";
 import { getAllParents } from "../../../../../prisma/queries/parentQueries";
