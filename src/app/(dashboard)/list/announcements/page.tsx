@@ -2,14 +2,40 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { announcementColumns } from "@/constants/columns";
-
-
 import Image from "next/image";
 import { AnnouncementList } from "@/types/listindex";
 import { getAllAnnouncements } from "../../../../../prisma/queries/announcementQueries";
 import { Prisma } from "@prisma/client";
-import { currentUserId, isAdmin, role } from "@/app/lib/data";
+import { auth,  } from "@clerk/nextjs/server";
+const {  userId,sessionClaims } = auth();
+const role = (sessionClaims?.metadata as { role: string })?.role;
+const isAdmin = role === "admin";
+const currentUserId = userId;
+export const announcementColumns = [
+  {
+    header: "Title",
+    accessor: "title",
+  },
+  {
+    header: "Class",
+    accessor: "class",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Date",
+    accessor: "date",
+    className: "hidden md:table-cell",
+  },
+
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+];
 const renderRow = (item: AnnouncementList) => (
   <tr
     key={item.id}

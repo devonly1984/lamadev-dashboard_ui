@@ -2,8 +2,8 @@ import { ITEMS_PER_PAGE } from "@/constants";
 import prisma from "@/app/lib/prisma";
 import { Prisma } from "@prisma/client";
 
-export const getAllClasses = async (p: number, query: Prisma.ClassWhereInput) => {
-  if (query !== undefined) {
+export const getAllClasses = async (query: Prisma.ClassWhereInput,p: number ) => {
+  
     const [classes, count] = await prisma.$transaction([
       prisma.class.findMany({
         where: query,
@@ -17,7 +17,7 @@ export const getAllClasses = async (p: number, query: Prisma.ClassWhereInput) =>
       prisma.class.count({ where: query }),
     ]);
     return [classes, count];
-  } else {
-    return [{}, 0];
-  }
+
+
+  
 };

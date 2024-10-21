@@ -7,7 +7,7 @@ type TableProps = {
     className?: string;
   }[];
   renderRow: (item: any) => ReactNode;
-  data: any[];
+  data: any;
 };
 const Table = ({ columns,renderRow,data }: TableProps) => {
   return (
@@ -21,7 +21,7 @@ const Table = ({ columns,renderRow,data }: TableProps) => {
           ))}
         </tr>
       </thead>
-      <tbody>{data.map((item) => renderRow(item))}</tbody>
+      <tbody>{data.map((item: any) => renderRow(item))}</tbody>
     </table>
   );
 };

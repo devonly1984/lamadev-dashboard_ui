@@ -2,15 +2,49 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { assignmentsColumns } from "@/constants/columns";
+
 
 
 import Image from "next/image";
 import { Prisma } from "@prisma/client";
 import { getAllAssignments } from "../../../../../prisma/queries/assignmentQueries";
 import { AssignmentList } from "@/types/listindex";
-import { currentUserId, isAdmin, isTeacher, role } from "@/app/lib/data";
+import { auth } from "@clerk/nextjs/server";
+const { userId, sessionClaims } = auth();
+const role = (sessionClaims?.metadata as { role: string })?.role;
+const isAdmin = role === "admin";
+const isTeacher = role === "teacher";
+const currentUserId = userId;
+export const assignmentsColumns = [
+  {
+    header: "Subject Name",
+    accessor: "name",
+  },
+  {
+    header: "Class",
+    accessor: "class",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Teacher",
+    accessor: "teacher",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Due Date",
+    accessor: "dueDate",
+    className: "hidden md:table-cell",
+  },
 
+  ...(isAdmin || isTeacher
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+];
 const renderRow = (item: AssignmentList) => (
   <tr
     key={item.id}

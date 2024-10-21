@@ -3,9 +3,12 @@ import prisma from "@/app/lib/prisma";
 import AnnouncementCard from "./cards/AnnouncementCard";
 import { auth } from "@clerk/nextjs/server";
 
+
 const Announcements = async() => {
   const {userId,sessionClaims} = auth();
-  const role = (sessionClaims?.metadata as {role?:string})?.role;
+  const role = (sessionClaims?.metadata as {role:string})?.role;
+  const isAdmin = role === "admin";
+
   const roleConditions = {
     teacher: { lessons: { some: { teacherId: userId! } } },
     student: { students: { some: { id: userId! } } },
@@ -37,4 +40,5 @@ const Announcements = async() => {
     </div>
   );
 };
+
 export default Announcements;

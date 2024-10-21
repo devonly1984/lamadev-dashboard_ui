@@ -2,13 +2,53 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { teacherColumns } from "@/constants/columns";
 import Image from "next/image";
 import Link from "next/link";
 import { Prisma, Subject } from "@prisma/client";
 import { getTeachers } from "../../../../../prisma/queries/teacherQueries";
 import { TeacherList } from "@/types/listindex";
-import { role } from "@/app/lib/data";
+import { auth } from "@clerk/nextjs/server";
+const {sessionClaims} = auth();
+const role = (sessionClaims?.metadata as { role: string })?.role;
+export const teacherColumns = [
+  {
+    header: "Info",
+    accessor: "info",
+  },
+  {
+    header: "Teacher ID",
+    accessor: "teacherid",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Subjects",
+    accessor: "subjects",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Classes",
+    accessor: "classes",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Phone",
+    accessor: "phone",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Address",
+    accessor: "address",
+    className: "hidden md:table-cell",
+  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+];
 
 const renderRow = (item: TeacherList) => (
   <tr

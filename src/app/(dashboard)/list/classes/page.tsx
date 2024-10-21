@@ -2,14 +2,44 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { classesColumns } from "@/constants/columns";
-import { isAdmin } from "@/app/lib/data";
+
 import Image from "next/image";
 import { ClassList } from "@/types/listindex";
 
 import { Prisma } from "@prisma/client";
 import { getAllClasses } from "../../../../../prisma/queries/classQueries";
-
+import { auth } from "@clerk/nextjs/server";
+const { sessionClaims } = auth();
+const role = (sessionClaims?.metadata as { role: string })?.role;
+const isAdmin = role==='admin';
+export const classesColumns = [
+  {
+    header: "Class Name",
+    accessor: "name",
+  },
+  {
+    header: "Capacity",
+    accessor: "capacity",
+  },
+  {
+    header: "Grade",
+    accessor: "grade",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Supervisor",
+    accessor: "supervisor",
+    className: "hidden md:table-cell",
+  },
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+];
 const renderRow = (item: ClassList) => (
   <tr
     key={item.id}
@@ -42,7 +72,7 @@ const ClassesListPage = async ({
   const p = page ? parseInt(page) : 1;
   const query:Prisma.ClassWhereInput = {}
 
-  if (queryParams !==undefined) {
+  if (queryParams) {
     for (const [key,value] of Object.entries(queryParams)) {
       if (value !==undefined){
         switch(key) {
@@ -58,8 +88,8 @@ const ClassesListPage = async ({
       }
     }
   }
-  const [classes, count] = await getAllClasses(p, query);
- 
+  const [classes, count] = await getAllClasses(query,p);
+ console.log("List Classes", classes);
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/**Top */}

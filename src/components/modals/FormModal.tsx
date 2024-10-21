@@ -47,27 +47,32 @@ const ParentForm = dynamic(() => import("../forms/ParentForm"), {
 });
 const forms: {
   [key: string]: (
-    type: "create" | "update",
     setOpen: Dispatch<SetStateAction<boolean>>,
+    type: "create" | "update",
     data?: any,
     relatedData?: any
   ) => JSX.Element;
 } = {
-  teacher: (type, data, setOpen) => (
+  teacher: (setOpen, type, data, relatedData) => (
     <TeacherForm
+      setOpen={setOpen}
       type={type}
       data={data}
-      setOpen={setOpen}
       relatedData={relatedData}
     />
   ),
   student: (type, data, setOpen) => (
     <StudentForm type={type} data={data} setOpen={setOpen} />
   ),
-  parent: (type, data, setOpen) => (
-    <ParentForm type={type} data={data} setOpen={setOpen} />
+  parent: (setOpen, type, data, relatedData) => (
+    <ParentForm
+      setOpen={setOpen}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  subject: (type, data, setOpen) => (
+  subject: (setOpen, type, data, relatedData) => (
     <SubjectForm
       type={type}
       data={data}
@@ -75,11 +80,11 @@ const forms: {
       relatedData={relatedData}
     />
   ),
-  class: (type, data, setOpen) => (
+  class: (setOpen, type, data, relatedData) => (
     <ClassForm
+      setOpen={setOpen}
       type={type}
       data={data}
-      setOpen={setOpen}
       relatedData={relatedData}
     />
   ),
@@ -149,7 +154,7 @@ const FormModal = ({
         </button>
       </form>
     ) : type === "create" || type === "update" ? (
-      forms[table](type, data, setOpen, relatedData)
+      forms[table](setOpen, type, data, relatedData)
     ) : (
       "Form not found"
     );

@@ -2,13 +2,34 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { subjectColumns } from "@/constants/columns";
-import { isAdmin } from "@/app/lib/data";
+
 import { SubjectList } from "@/types/listindex";
 import Image from "next/image";
 import { Prisma, } from "@prisma/client";
 import { getAllSubjects } from "../../../../../prisma/queries/subjectQueries";
+import { auth } from "@clerk/nextjs/server";
+const { sessionClaims } = auth();
+const role = (sessionClaims?.metadata as { role: string })?.role;
+export const subjectColumns = [
+  {
+    header: "Subject Name",
+    accessor: "name",
+  },
+  {
+    header: "Teachers",
+    accessor: "teachers",
+    className: "hidden md:table-cell",
+  },
 
+  ...(role==='admin'
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+]
 const renderRow = (item: SubjectList) => (
   <tr
     key={item.id}
@@ -21,7 +42,7 @@ const renderRow = (item: SubjectList) => (
 
     <td>
       <div className="flex items-center gap-2">
-        {isAdmin && (
+        {role === "admin" && (
           <>
             <FormContainer table="subject" type="update" data={item} />
             <FormContainer table="subject" type="delete" id={item.id} />
@@ -69,7 +90,9 @@ const SubjectListPage = async ({
             <button className="w-8 h-8  flex items-center justify-center rounded-full bg-lamaYellow">
               <Image src="/sort.png" alt="sort" height={14} width={14} />
             </button>
-            {isAdmin && <FormContainer table="subject" type="create" />}
+            {role === "admin" && (
+              <FormContainer table="subject" type="create" />
+            )}
           </div>
         </div>
       </div>

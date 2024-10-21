@@ -3,27 +3,28 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from 'zod'
-import { StudentFormSchema } from "../../app/lib/formSchema/StudentSchema";
+import { StudentSchema } from "../../app/lib/formSchema/StudentSchema";
 import InputField from "./InputField";
 import Image from "next/image";
+import { FormProps } from "@/types/formTypes";
 
 const ParentForm = ({
+  setOpen,
+
   type,
   data,
-}: {
-  type: "create" | "update";
-  data?: any;
-}) => {
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm<z.infer <typeof StudentFormSchema>>({
-        resolver: zodResolver(StudentFormSchema)
-    });
-    const onSubmit = (data: z.infer<typeof StudentFormSchema>) => {
-      console.log(data);
-    };
+  relatedData,
+}: FormProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof StudentSchema>>({
+    resolver: zodResolver(StudentSchema),
+  });
+  const onSubmit = (data: z.infer<typeof StudentSchema>) => {
+    console.log(data);
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
       <h1 className="text-xl font-semibold capitalize">

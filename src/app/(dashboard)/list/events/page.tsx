@@ -2,14 +2,43 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import {  eventColumns} from "@/constants/columns";
-import { currentUserId, isAdmin, role } from "@/app/lib/data";
+
 
 import Image from "next/image";
 import { EventList } from "@/types/listindex";
 import { getAllEvents } from "../../../../../prisma/queries/eventQueries";
 import { Prisma } from "@prisma/client";
+import { auth, currentUser } from "@clerk/nextjs/server";
+const { userId, sessionClaims } = auth();
+const role = (sessionClaims?.metadata as { role: string })?.role;
+const isAdmin = role === "admin";
 
+const currentUserId = userId;
+export const eventColumns = [
+  {
+    header: "Title",
+    accessor: "title",
+  },
+  {
+    header: "Class",
+    accessor: "class",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Date",
+    accessor: "date",
+    className: "hidden md:table-cell",
+  },
+
+  ...(isAdmin
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+];
 const renderRow = (item: EventList) => (
   <tr
     key={item.id}

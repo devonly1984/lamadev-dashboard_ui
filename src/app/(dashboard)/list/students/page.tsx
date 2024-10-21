@@ -2,15 +2,51 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { studentColumns,  } from "@/constants/columns";
-import { role } from "@/app/lib/data";
+
 
 import Image from "next/image";
 import Link from "next/link";
 import { getAllStudents } from "../../../../../prisma/queries/studentQueries";
 import { Prisma } from "@prisma/client";
 import { StudentList } from "@/types/listindex";
+import { auth } from "@clerk/nextjs/server";
+const { sessionClaims } = auth();
+const role = (sessionClaims?.metadata as { role: string })?.role;
+export const studentColumns = [
+  {
+    header: "Info",
+    accessor: "info",
+  },
+  {
+    header: "Student ID",
+    accessor: "studentId",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Grade",
+    accessor: "grade",
+    className: "hidden md:table-cell",
+  },
 
+  {
+    header: "Phone",
+    accessor: "phone",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Address",
+    accessor: "address",
+    className: "hidden md:table-cell",
+  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+];
 const renderRow = (item: StudentList) => (
   <tr
     key={item.id}

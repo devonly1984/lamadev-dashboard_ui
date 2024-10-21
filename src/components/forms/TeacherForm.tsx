@@ -11,7 +11,7 @@ import { FormProps } from "@/types/formTypes";
 import { useFormState } from "react-dom";
 import { createTeacher, updateTeacher } from "@/actions/TeacherActions";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { CldUploadWidget } from "next-cloudinary";
 
@@ -30,8 +30,9 @@ const TeacherForm = ({ setOpen, type, data, relatedData }: FormProps) => {
       error: false,
     }
   );
+  const [img, setImg] = useState<any>()
   const onSubmit = (data: TeacherInputs) => {
-    formAction(data);
+    formAction({ ...data, img: img?.secure_url });
   };
   const router = useRouter();
   useEffect(() => {
@@ -122,10 +123,21 @@ const TeacherForm = ({ setOpen, type, data, relatedData }: FormProps) => {
           label="Birthday"
           register={register}
           name="birthday"
-          defaultValue={data?.birthday}
+          defaultValue={data?.birthday.toISoString().split("T")[0]}
           error={errors?.birthday}
           type="date"
         />
+        {data && (
+          <InputField
+            label="Id"
+            register={register}
+            name="id"
+            defaultValue={data?.id}
+            error={errors?.id}
+            type="date"
+            hidden
+          />
+        )}
         <div className="flex flex-col gap-8 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Sex</label>
           <select
@@ -133,8 +145,8 @@ const TeacherForm = ({ setOpen, type, data, relatedData }: FormProps) => {
             {...register("sex")}
             defaultValue={data?.sex}
           >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
           </select>
           {errors.sex?.message && (
             <p className="text-xs text-red-400">
@@ -150,7 +162,7 @@ const TeacherForm = ({ setOpen, type, data, relatedData }: FormProps) => {
             {...register("subjects")}
             defaultValue={data?.subjects}
           >
-            {subjects.map((subject: { id: number; name: string }) => (
+            {subjects?.map((subject: { id: number; name: string }) => (
               <option value={subject.id} key={subject.id}>
                 {subject.name}
               </option>
@@ -162,7 +174,13 @@ const TeacherForm = ({ setOpen, type, data, relatedData }: FormProps) => {
             </p>
           )}
         </div>
-        <CldUploadWidget uploadPreset="school">
+        <CldUploadWidget
+          uploadPreset="school"
+          onSuccess={(result, { widget }) => {
+            setImg(result.info);
+            widget.close();
+          }}
+        >
           {({ open }) => {
             return (
               <div

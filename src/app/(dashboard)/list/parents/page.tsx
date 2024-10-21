@@ -2,14 +2,46 @@ import FormContainer from "@/components/forms/FormContainer";
 import Pagination from "@/components/shared/Pagination";
 import TableSearch from "@/components/shared/TableSearch";
 import Table from "@/components/Table";
-import { parentColumns,   } from "@/constants/columns";
-import { isAdmin} from "@/app/lib/data";
+
 
 import Image from "next/image";
 import { getAllParents } from "../../../../../prisma/queries/parentQueries";
 import {  Prisma} from "@prisma/client";
 import { ParentList } from "@/types/listindex";
+import { auth } from "@clerk/nextjs/server";
+const { sessionClaims } = auth();
+const role = (sessionClaims?.metadata as { role: string })?.role;
+const isAdmin = role === "admin";
+export const parentColumns = [
+  {
+    header: "Info",
+    accessor: "info",
+  },
+  {
+    header: "Student Names",
+    accessor: "students",
+    className: "hidden md:table-cell",
+  },
 
+  {
+    header: "Phone",
+    accessor: "phone",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Address",
+    accessor: "address",
+    className: "hidden md:table-cell",
+  },
+  ...(role==='admin'
+    ? [
+        {
+          header: "Actions",
+          accessor: "actions",
+        },
+      ]
+    : []),
+];
 const renderRow = (item: ParentList) => (
   <tr
     key={item.id}
@@ -29,7 +61,7 @@ const renderRow = (item: ParentList) => (
     <td className="hidden md:table-cell">{item.address}</td>
     <td>
       <div className="flex items-center gap-2">
-        {isAdmin && (
+        {role === "admin" && (
           <>
             <FormContainer table="parent" type="update" data={item} />
             <FormContainer table="parent" type="delete" id={item.id} />
